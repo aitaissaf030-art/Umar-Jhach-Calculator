@@ -1,94 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Age Calculator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #4e73df, #1cc88a);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umar Jhach Calculator</title>
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            width: 300px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+<style>
 
-        h2 {
-            margin-bottom: 20px;
-        }
+body{
+margin:0;
+font-family:Arial;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#667eea,#43cea2);
+}
 
-        input {
-            padding: 10px;
-            width: 100%;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+.calculator{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+width:300px;
+}
 
-        button {
-            padding: 10px;
-            width: 100%;
-            background: #4e73df;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+#display{
+width:100%;
+height:50px;
+font-size:20px;
+margin-bottom:10px;
+text-align:right;
+padding-right:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
 
-        button:hover {
-            background: #2e59d9;
-        }
+.buttons{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
 
-        #result {
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+button{
+height:50px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#f2f2f2;
+cursor:pointer;
+}
+
+button:hover{
+background:#ddd;
+}
+
+.equal{
+background:#0072ff;
+color:white;
+}
+
+.clear{
+background:#ff4b2b;
+color:white;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>Age Calculator</h2>
-    <input type="date" id="dob">
-    <button onclick="calculateAge()">Calculate Age</button>
-    <div id="result"></div>
+<div class="calculator">
+
+<input id="display" readonly>
+
+<div class="buttons">
+
+<button onclick="clearDisplay()" class="clear">C</button>
+<button onclick="backspace()">⌫</button>
+<button onclick="percent()">%</button>
+<button onclick="append('/')">÷</button>
+
+<button onclick="append('7')">7</button>
+<button onclick="append('8')">8</button>
+<button onclick="append('9')">9</button>
+<button onclick="append('*')">×</button>
+
+<button onclick="append('4')">4</button>
+<button onclick="append('5')">5</button>
+<button onclick="append('6')">6</button>
+<button onclick="append('-')">−</button>
+
+<button onclick="append('1')">1</button>
+<button onclick="append('2')">2</button>
+<button onclick="append('3')">3</button>
+<button onclick="append('+')">+</button>
+
+<button onclick="square()">x²</button>
+<button onclick="sqrt()">√</button>
+<button onclick="inverse()">1/x</button>
+<button onclick="calculate()" class="equal">=</button>
+
+<button onclick="append('0')" style="grid-column:span 2;">0</button>
+<button onclick="append('.')">.</button>
+
+</div>
+
 </div>
 
 <script>
-    function calculateAge() {
-        const dob = new Date(document.getElementById("dob").value);
-        const today = new Date();
 
-        let years = today.getFullYear() - dob.getFullYear();
-        let months = today.getMonth() - dob.getMonth();
-        let days = today.getDate() - dob.getDate();
+function append(value){
+document.getElementById("display").value += value;
+}
 
-        if (days < 0) {
-            months--;
-            days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-        }
+function clearDisplay(){
+document.getElementById("display").value="";
+}
 
-        if (months < 0) {
-            years--;
-            months += 12;
-        }
+function backspace(){
+let d=document.getElementById("display");
+d.value=d.value.slice(0,-1);
+}
 
-        document.getElementById("result").innerHTML =
-            "You are " + years + " Years, " + months + " Months, " + days + " Days old.";
-    }
+function calculate(){
+let d=document.getElementById("display");
+try{
+d.value=eval(d.value);
+}catch{
+d.value="Error";
+}
+}
+
+function percent(){
+let d=document.getElementById("display");
+d.value=d.value/100;
+}
+
+function square(){
+let d=document.getElementById("display");
+d.value=d.value*d.value;
+}
+
+function sqrt(){
+let d=document.getElementById("display");
+d.value=Math.sqrt(d.value);
+}
+
+function inverse(){
+let d=document.getElementById("display");
+d.value=1/d.value;
+}
+
 </script>
 
 </body>
 </html>
-
