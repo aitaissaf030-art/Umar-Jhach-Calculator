@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Umar Jhach Calculator</title>
+<title>Umar Jhach Age Calculator</title>
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
+margin:0;
 height:100vh;
 display:flex;
 justify-content:center;
@@ -17,139 +17,143 @@ align-items:center;
 background:linear-gradient(135deg,#667eea,#43cea2);
 }
 
-.calculator{
+.container{
 background:white;
-padding:20px;
+padding:25px;
 border-radius:15px;
+width:320px;
 box-shadow:0 10px 30px rgba(0,0,0,0.3);
-width:300px;
+text-align:center;
 }
 
-#display{
+input{
 width:100%;
-height:50px;
-font-size:20px;
-margin-bottom:10px;
-text-align:right;
-padding-right:10px;
-border-radius:10px;
-border:1px solid #ddd;
-}
-
-.buttons{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
+padding:10px;
+margin-top:10px;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
-height:50px;
-font-size:18px;
+margin-top:15px;
+padding:10px;
+width:100%;
 border:none;
-border-radius:10px;
-background:#f2f2f2;
+border-radius:8px;
+background:#0072ff;
+color:white;
+font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-background:#ddd;
-}
-
-.equal{
-background:#0072ff;
-color:white;
-}
-
-.clear{
-background:#ff4b2b;
-color:white;
+.result{
+margin-top:15px;
+font-size:14px;
+text-align:left;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="calculator">
+<div class="container">
 
-<input id="display" readonly>
+<h2>Age Calculator</h2>
 
-<div class="buttons">
+<input type="date" id="dob">
 
-<button onclick="clearDisplay()" class="clear">C</button>
-<button onclick="backspace()">⌫</button>
-<button onclick="percent()">%</button>
-<button onclick="append('/')">÷</button>
+<button onclick="calculateAge()">Calculate Age</button>
 
-<button onclick="append('7')">7</button>
-<button onclick="append('8')">8</button>
-<button onclick="append('9')">9</button>
-<button onclick="append('*')">×</button>
-
-<button onclick="append('4')">4</button>
-<button onclick="append('5')">5</button>
-<button onclick="append('6')">6</button>
-<button onclick="append('-')">−</button>
-
-<button onclick="append('1')">1</button>
-<button onclick="append('2')">2</button>
-<button onclick="append('3')">3</button>
-<button onclick="append('+')">+</button>
-
-<button onclick="square()">x²</button>
-<button onclick="sqrt()">√</button>
-<button onclick="inverse()">1/x</button>
-<button onclick="calculate()" class="equal">=</button>
-
-<button onclick="append('0')" style="grid-column:span 2;">0</button>
-<button onclick="append('.')">.</button>
-
-</div>
+<div class="result" id="result"></div>
 
 </div>
 
 <script>
 
-function append(value){
-document.getElementById("display").value += value;
+function getZodiac(day,month){
+
+const zodiac=[
+["Capricorn",20],
+["Aquarius",19],
+["Pisces",21],
+["Aries",20],
+["Taurus",21],
+["Gemini",21],
+["Cancer",23],
+["Leo",23],
+["Virgo",23],
+["Libra",23],
+["Scorpio",22],
+["Sagittarius",22],
+["Capricorn",31]
+];
+
+return (day<zodiac[month][1])?zodiac[month][0]:zodiac[month+1][0];
+
 }
 
-function clearDisplay(){
-document.getElementById("display").value="";
+function calculateAge(){
+
+let dob=document.getElementById("dob").value;
+
+if(!dob){
+alert("Select date of birth");
+return;
 }
 
-function backspace(){
-let d=document.getElementById("display");
-d.value=d.value.slice(0,-1);
+let birth=new Date(dob);
+let today=new Date();
+
+let years=today.getFullYear()-birth.getFullYear();
+let months=today.getMonth()-birth.getMonth();
+let days=today.getDate()-birth.getDate();
+
+if(days<0){
+months--;
+days+=30;
 }
 
-function calculate(){
-let d=document.getElementById("display");
-try{
-d.value=eval(d.value);
-}catch{
-d.value="Error";
-}
+if(months<0){
+years--;
+months+=12;
 }
 
-function percent(){
-let d=document.getElementById("display");
-d.value=d.value/100;
+let diff=today-birth;
+
+let totalDays=Math.floor(diff/(1000*60*60*24));
+let totalWeeks=Math.floor(totalDays/7);
+let totalMonths=Math.floor(totalDays/30);
+let totalHours=Math.floor(diff/(1000*60*60));
+
+let nextBirthday=new Date(today.getFullYear(),birth.getMonth(),birth.getDate());
+
+if(today>nextBirthday){
+nextBirthday.setFullYear(today.getFullYear()+1);
 }
 
-function square(){
-let d=document.getElementById("display");
-d.value=d.value*d.value;
-}
+let birthdayDays=Math.ceil((nextBirthday-today)/(1000*60*60*24));
 
-function sqrt(){
-let d=document.getElementById("display");
-d.value=Math.sqrt(d.value);
-}
+let zodiac=getZodiac(birth.getDate(),birth.getMonth());
 
-function inverse(){
-let d=document.getElementById("display");
-d.value=1/d.value;
+let dayName=birth.toLocaleDateString('en-US',{weekday:'long'});
+
+document.getElementById("result").innerHTML=`
+
+<b>Age:</b> ${years} Years ${months} Months ${days} Days<br><br>
+
+<b>Total Months:</b> ${totalMonths}<br>
+<b>Total Weeks:</b> ${totalWeeks}<br>
+<b>Total Days:</b> ${totalDays}<br>
+<b>Total Hours:</b> ${totalHours}<br><br>
+
+<b>Next Birthday In:</b> ${birthdayDays} Days<br>
+<b>Zodiac Sign:</b> ${zodiac}<br>
+<b>Day of Birth:</b> ${dayName}
+
+`;
+
 }
 
 </script>
