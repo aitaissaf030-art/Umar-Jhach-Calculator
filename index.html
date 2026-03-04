@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Umar Jhach Age Calculator</title>
+<title>Umar Jhach Age Calculator v2</title>
 
 <style>
 
 body{
 font-family:Arial;
 margin:0;
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -21,9 +21,13 @@ background:linear-gradient(135deg,#667eea,#43cea2);
 background:white;
 padding:25px;
 border-radius:15px;
-width:320px;
+width:360px;
 box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+h2{
 text-align:center;
+margin-bottom:15px;
 }
 
 input{
@@ -35,7 +39,7 @@ border:1px solid #ccc;
 }
 
 button{
-margin-top:15px;
+margin-top:12px;
 padding:10px;
 width:100%;
 border:none;
@@ -46,10 +50,31 @@ font-size:16px;
 cursor:pointer;
 }
 
+button:hover{
+background:#0056cc;
+}
+
 .result{
 margin-top:15px;
 font-size:14px;
-text-align:left;
+}
+
+.progress{
+width:100%;
+background:#ddd;
+border-radius:10px;
+margin-top:10px;
+}
+
+.bar{
+height:10px;
+background:#43cea2;
+width:0%;
+border-radius:10px;
+}
+
+.section{
+margin-top:20px;
 }
 
 </style>
@@ -60,39 +85,35 @@ text-align:left;
 
 <div class="container">
 
-<h2>Age Calculator</h2>
+<h2>Age Calculator v2</h2>
 
+<label>Your Date of Birth</label>
 <input type="date" id="dob">
 
 <button onclick="calculateAge()">Calculate Age</button>
 
+<div class="progress">
+<div class="bar" id="lifeBar"></div>
+</div>
+
 <div class="result" id="result"></div>
+
+<div class="section">
+
+<h3>Age Difference</h3>
+
+<input type="date" id="date1">
+<input type="date" id="date2">
+
+<button onclick="ageDifference()">Calculate Difference</button>
+
+<div class="result" id="diffResult"></div>
+
+</div>
 
 </div>
 
 <script>
-
-function getZodiac(day,month){
-
-const zodiac=[
-["Capricorn",20],
-["Aquarius",19],
-["Pisces",21],
-["Aries",20],
-["Taurus",21],
-["Gemini",21],
-["Cancer",23],
-["Leo",23],
-["Virgo",23],
-["Libra",23],
-["Scorpio",22],
-["Sagittarius",22],
-["Capricorn",31]
-];
-
-return (day<zodiac[month][1])?zodiac[month][0]:zodiac[month+1][0];
-
-}
 
 function calculateAge(){
 
@@ -105,6 +126,8 @@ return;
 
 let birth=new Date(dob);
 let today=new Date();
+
+let diff=today-birth;
 
 let years=today.getFullYear()-birth.getFullYear();
 let months=today.getMonth()-birth.getMonth();
@@ -120,12 +143,12 @@ years--;
 months+=12;
 }
 
-let diff=today-birth;
-
 let totalDays=Math.floor(diff/(1000*60*60*24));
 let totalWeeks=Math.floor(totalDays/7);
 let totalMonths=Math.floor(totalDays/30);
 let totalHours=Math.floor(diff/(1000*60*60));
+let totalMinutes=Math.floor(diff/(1000*60));
+let totalSeconds=Math.floor(diff/1000);
 
 let nextBirthday=new Date(today.getFullYear(),birth.getMonth(),birth.getDate());
 
@@ -135,24 +158,55 @@ nextBirthday.setFullYear(today.getFullYear()+1);
 
 let birthdayDays=Math.ceil((nextBirthday-today)/(1000*60*60*24));
 
-let zodiac=getZodiac(birth.getDate(),birth.getMonth());
-
 let dayName=birth.toLocaleDateString('en-US',{weekday:'long'});
 
-document.getElementById("result").innerHTML=`
+let lifeExpectancy=80*365;
+let lifePercent=(totalDays/lifeExpectancy)*100;
 
-<b>Age:</b> ${years} Years ${months} Months ${days} Days<br><br>
+document.getElementById("lifeBar").style.width=lifePercent+"%";
 
-<b>Total Months:</b> ${totalMonths}<br>
-<b>Total Weeks:</b> ${totalWeeks}<br>
-<b>Total Days:</b> ${totalDays}<br>
-<b>Total Hours:</b> ${totalHours}<br><br>
+document.getElementById("result").innerHTML=
 
-<b>Next Birthday In:</b> ${birthdayDays} Days<br>
-<b>Zodiac Sign:</b> ${zodiac}<br>
-<b>Day of Birth:</b> ${dayName}
+"<b>Exact Age:</b> "+years+" Years "+months+" Months "+days+" Days<br><br>"+
 
-`;
+"<b>Total Months:</b> "+totalMonths+"<br>"+
+"<b>Total Weeks:</b> "+totalWeeks+"<br>"+
+"<b>Total Days:</b> "+totalDays+"<br>"+
+"<b>Total Hours:</b> "+totalHours+"<br>"+
+"<b>Total Minutes:</b> "+totalMinutes+"<br>"+
+"<b>Total Seconds:</b> "+totalSeconds+"<br><br>"+
+
+"<b>Next Birthday In:</b> "+birthdayDays+" Days<br>"+
+"<b>Day of Birth:</b> "+dayName;
+
+}
+
+function ageDifference(){
+
+let d1=document.getElementById("date1").value;
+let d2=document.getElementById("date2").value;
+
+if(!d1 || !d2){
+alert("Select both dates");
+return;
+}
+
+let date1=new Date(d1);
+let date2=new Date(d2);
+
+let diff=Math.abs(date2-date1);
+
+let days=Math.floor(diff/(1000*60*60*24));
+let weeks=Math.floor(days/7);
+let months=Math.floor(days/30);
+
+document.getElementById("diffResult").innerHTML=
+
+"<b>Difference:</b><br><br>"+
+
+days+" Days<br>"+
+weeks+" Weeks<br>"+
+months+" Months";
 
 }
 
