@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>VIP Currency Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0a0c0f 0%, #1a1e24 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .converter-card {
+            max-width: 480px;
+            width: 100%;
+            background: rgba(20, 25, 35, 0.95);
+            backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 28px 24px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.2), 0 0 30px rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .vip-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            color: #d4af37;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+        .vip-header i {
+            font-size: 1.4rem;
+            text-shadow: 0 0 12px gold;
+        }
+        .amount-section {
+            margin-bottom: 25px;
+        }
+        .amount-label {
+            color: #aab7c4;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .amount-input {
+            width: 100%;
+            background: #0f1219;
+            border: 1px solid #2f3640;
+            border-radius: 28px;
+            padding: 18px 22px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #f0e6d2;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .amount-input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+        .currency-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .currency-select {
+            flex: 1;
+            background: #1e232c;
+            border: 1px solid #2f3640;
+            border-radius: 28px;
+            padding: 16px 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #f0e6d2;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+        }
+        .currency-select option {
+            background: #1e232c;
+            color: #f0e6d2;
+        }
+        .swap-btn {
+            background: #2a313c;
+            border: none;
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            font-size: 1.4rem;
+            color: #d4af37;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            border: 1px solid #3f4a5a;
+            box-shadow: 0 6px 0 #0b0e12;
+        }
+        .swap-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #0b0e12;
+        }
+        .convert-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #d4af37, #b3922c);
+            border: none;
+            border-radius: 40px;
+            padding: 18px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0a0c0f;
+            cursor: pointer;
+            margin: 20px 0 18px;
+            box-shadow: 0 8px 0 #7a651f, 0 10px 25px rgba(212, 175, 55, 0.4);
+            transition: 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .convert-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #7a651f, 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        .result-box {
+            background: #0f1219;
+            border-radius: 28px;
+            padding: 22px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #2a313c;
+        }
+        .conversion-result {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+        .rate-info {
+            color: #8f9bb3;
+            font-size: 0.9rem;
+        }
+        .rate-info i {
+            margin-right: 5px;
+            color: #d4af37;
+        }
+        .popular-pairs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 10px;
+            margin: 20px 0 10px;
+        }
+        .pair-btn {
+            background: #1e232c;
+            border: 1px solid #2f3640;
+            border-radius: 28px;
+            padding: 12px 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e5e9f0;
+            cursor: pointer;
+            transition: 0.15s;
+            box-shadow: 0 4px 0 #0b0e12;
+            text-align: center;
+        }
+        .pair-btn span {
+            color: #d4af37;
+            font-weight: 700;
+        }
+        .pair-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #0b0e12;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #5f6b7a;
+            font-size: 0.75rem;
+        }
+        .footer-note i {
+            color: #d4af37;
+        }
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-card">
+        <div class="vip-header">
+            <i class="fas fa-crown"></i> VIP CURRENCY CONVERTER <i class="fas fa-crown"></i>
+        </div>
+
+        <div class="amount-section">
+            <div class="amount-label">AMOUNT</div>
+            <input type="number" id="amount" class="amount-input" value="1.00" step="any" min="0">
+        </div>
+
+        <div class="currency-row">
+            <select id="fromCurrency" class="currency-select">
+                <!-- populated by JS -->
+            </select>
+            <button id="swapBtn" class="swap-btn"><i class="fas fa-exchange-alt"></i></button>
+            <select id="toCurrency" class="currency-select">
+                <!-- populated by JS -->
+            </select>
+        </div>
+
+        <button id="convertBtn" class="convert-btn">
+            <i class="fas fa-sync-alt"></i> CONVERT
+        </button>
+
+        <div class="result-box">
+            <div id="resultAmount" class="conversion-result">—</div>
+            <div id="rateInfo" class="rate-info"><i class="fas fa-chart-line"></i> <span id="rateText">1 USD = 0.92 EUR</span></div>
+        </div>
+
+        <div class="popular-pairs">
+            <button class="pair-btn" data-from="USD" data-to="EUR">USD <span>→</span> EUR</button>
+            <button class="pair-btn" data-from="EUR" data-to="USD">EUR <span>→</span> USD</button>
+            <button class="pair-btn" data-from="GBP" data-to="USD">GBP <span>→</span> USD</button>
+            <button class="pair-btn" data-from="USD" data-to="JPY">USD <span>→</span> JPY</button>
+        </div>
+
+        <div class="footer-note">
+            <i class="fas fa-bolt"></i> live rates via Frankfurter • updated every minute
+        </div>
+    </div>
+
+    <script>
+        // Currency list (major & popular)
+        const currencies = [
+            "USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "CNY", "INR", "NZD",
+            "BRL", "ZAR", "RUB", "KRW", "SGD", "HKD", "SEK", "NOK", "MXN", "TRY",
+            "AED", "SAR", "THB", "MYR", "IDR", "PKR", "PHP", "PLN", "CZK", "ILS"
+        ];
+
+        const fromSelect = document.getElementById('fromCurrency');
+        const toSelect = document.getElementById('toCurrency');
+        const amountInput = document.getElementById('amount');
+        const convertBtn = document.getElementById('convertBtn');
+        const swapBtn = document.getElementById('swapBtn');
+        const resultAmount = document.getElementById('resultAmount');
+        const rateText = document.getElementById('rateText');
+        const popularBtns = document.querySelectorAll('.pair-btn');
+
+        let lastFrom = 'USD';
+        let lastTo = 'EUR';
+        let lastAmount = 1;
+        let currentRate = 0;
+
+        // Populate dropdowns
+        currencies.forEach(code => {
+            const option1 = document.createElement('option');
+            option1.value = code;
+            option1.textContent = code;
+            fromSelect.appendChild(option1);
+
+            const option2 = document.createElement('option');
+            option2.value = code;
+            option2.textContent = code;
+            toSelect.appendChild(option2);
+        });
+
+        // Set default selections
+        fromSelect.value = 'USD';
+        toSelect.value = 'EUR';
+
+        // Fetch conversion from Frankfurter API
+        async function convert() {
+            const amount = parseFloat(amountInput.value) || 1;
+            const from = fromSelect.value;
+            const to = toSelect.value;
+
+            if (from === to) {
+                resultAmount.textContent = formatNumber(amount) + ' ' + to;
+                rateText.textContent = `1 ${from} = 1 ${to}`;
+                return;
+            }
+
+            // Show loading state
+            convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CONVERT';
+            convertBtn.disabled = true;
+
+            try {
+                const url = `https://api.frankfurter.app/latest?amount=${amount}&from=${from}&to=${to}`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.rates && data.rates[to]) {
+                    const converted = data.rates[to];
+                    resultAmount.textContent = formatNumber(converted) + ' ' + to;
+                    // Get rate for 1 unit
+                    const rateUrl = `https://api.frankfurter.app/latest?amount=1&from=${from}&to=${to}`;
+                    const rateResponse = await fetch(rateUrl);
+                    const rateData = await rateResponse.json();
+                    if (rateData.rates && rateData.rates[to]) {
+                        const rate = rateData.rates[to];
+                        rateText.textContent = `1 ${from} = ${formatNumber(rate)} ${to}`;
+                        currentRate = rate;
+                    } else {
+                        rateText.textContent = `1 ${from} = ?`;
+                    }
+                } else {
+                    throw new Error('Conversion failed');
+                }
+            } catch (error) {
+                console.error(error);
+                resultAmount.textContent = '⚠️ Error';
+                rateText.textContent = 'Could not fetch rates. Try again.';
+            } finally {
+                convertBtn.innerHTML = '<i class="fas fa-sync-alt"></i> CONVERT';
+                convertBtn.disabled = false;
+            }
+        }
+
+        function formatNumber(num) {
+            if (num === null || num === undefined) return '—';
+            // If number is very small or large, use toFixed(4) otherwise dynamic
+            if (Math.abs(num) < 0.01) return num.toExponential(4);
+            if (Math.abs(num) > 1e6) return num.toExponential(4);
+            return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+        }
+
+        // Swap currencies
+        function swap() {
+            const from = fromSelect.value;
+            const to = toSelect.value;
+            fromSelect.value = to;
+            toSelect.value = from;
+            convert();
+        }
+
+        // Event listeners
+        convertBtn.addEventListener('click', convert);
+        swapBtn.addEventListener('click', swap);
+        amountInput.addEventListener('input', convert);
+        fromSelect.addEventListener('change', convert);
+        toSelect.addEventListener('change', convert);
+
+        // Popular pair buttons
+        popularBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const from = btn.getAttribute('data-from');
+                const to = btn.getAttribute('data-to');
+                fromSelect.value = from;
+                toSelect.value = to;
+                amountInput.value = 1;
+                convert();
+            });
+        });
+
+        // Initial conversion
+        convert();
+
+        // Extra: update on amount blur to avoid too many requests while typing
+        amountInput.addEventListener('blur', convert);
+    </script>
+</body>
+</html>
