@@ -1,216 +1,315 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Umar Jhach Age Calculator v2</title>
-
-<style>
-
-body{
-font-family:Arial;
-margin:0;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#667eea,#43cea2);
-}
-
-.container{
-background:white;
-padding:25px;
-border-radius:15px;
-width:360px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
-
-h2{
-text-align:center;
-margin-bottom:15px;
-}
-
-input{
-width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-button{
-margin-top:12px;
-padding:10px;
-width:100%;
-border:none;
-border-radius:8px;
-background:#0072ff;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#0056cc;
-}
-
-.result{
-margin-top:15px;
-font-size:14px;
-}
-
-.progress{
-width:100%;
-background:#ddd;
-border-radius:10px;
-margin-top:10px;
-}
-
-.bar{
-height:10px;
-background:#43cea2;
-width:0%;
-border-radius:10px;
-}
-
-.section{
-margin-top:20px;
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>VIP Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0a0c0f 0%, #1a1e24 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .calculator {
+            max-width: 400px;
+            width: 100%;
+            background: rgba(20, 25, 35, 0.9);
+            backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 24px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.2), 0 0 20px rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .vip-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: #d4af37;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .vip-badge i {
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px gold;
+        }
+        .display {
+            background: #0f1219;
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.6), 0 0 0 1px #2a313c;
+        }
+        .display input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #f0e6d2;
+            font-size: 2.8rem;
+            font-weight: 300;
+            text-align: right;
+            outline: none;
+            letter-spacing: 1px;
+        }
+        .display input::placeholder {
+            color: #3f4a5a;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .btn {
+            background: #1e232c;
+            border: none;
+            border-radius: 24px;
+            padding: 20px 8px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e5e9f0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 6px 0 #0b0e12, 0 8px 15px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .btn:active {
+            transform: translateY(5px);
+            box-shadow: 0 2px 0 #0b0e12, 0 5px 12px rgba(0,0,0,0.5);
+        }
+        .btn-gold {
+            background: linear-gradient(145deg, #d4af37, #b3922c);
+            color: #0a0c0f;
+            box-shadow: 0 6px 0 #7a651f, 0 8px 20px rgba(212, 175, 55, 0.4);
+            border-color: #f5e7c8;
+        }
+        .btn-gold i {
+            color: #0a0c0f;
+        }
+        .btn-wide {
+            grid-column: span 2;
+        }
+        .btn i {
+            font-size: 1.3rem;
+            color: #d4af37;
+        }
+        .btn-gold i {
+            color: #0a0c0f;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            color: #5f6b7a;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .footer-note i {
+            color: #d4af37;
+        }
+        /* vip glow on operators */
+        .btn-operator {
+            color: #d4af37;
+            font-weight: 700;
+        }
+    </style>
 </head>
-
 <body>
+    <div class="calculator">
+        <div class="vip-badge">
+            <i class="fas fa-crown"></i> VIP CALCULATOR <i class="fas fa-crown"></i>
+        </div>
 
-<div class="container">
+        <div class="display">
+            <input type="text" id="calc-display" placeholder="0" readonly>
+        </div>
 
-<h2>Age Calculator v2</h2>
+        <div class="buttons">
+            <!-- Row 1 -->
+            <button class="btn" onclick="clearDisplay()">C</button>
+            <button class="btn" onclick="deleteLast()"><i class="fas fa-backspace"></i></button>
+            <button class="btn btn-operator" onclick="appendOperator('%')">%</button>
+            <button class="btn btn-operator" onclick="appendOperator('/')">÷</button>
 
-<label>Your Date of Birth</label>
-<input type="date" id="dob">
+            <!-- Row 2 -->
+            <button class="btn" onclick="appendNumber('7')">7</button>
+            <button class="btn" onclick="appendNumber('8')">8</button>
+            <button class="btn" onclick="appendNumber('9')">9</button>
+            <button class="btn btn-operator" onclick="appendOperator('*')">×</button>
 
-<button onclick="calculateAge()">Calculate Age</button>
+            <!-- Row 3 -->
+            <button class="btn" onclick="appendNumber('4')">4</button>
+            <button class="btn" onclick="appendNumber('5')">5</button>
+            <button class="btn" onclick="appendNumber('6')">6</button>
+            <button class="btn btn-operator" onclick="appendOperator('-')">−</button>
 
-<div class="progress">
-<div class="bar" id="lifeBar"></div>
-</div>
+            <!-- Row 4 -->
+            <button class="btn" onclick="appendNumber('1')">1</button>
+            <button class="btn" onclick="appendNumber('2')">2</button>
+            <button class="btn" onclick="appendNumber('3')">3</button>
+            <button class="btn btn-operator" onclick="appendOperator('+')">+</button>
 
-<div class="result" id="result"></div>
+            <!-- Row 5 -->
+            <button class="btn" onclick="appendNumber('00')">00</button>
+            <button class="btn" onclick="appendNumber('0')">0</button>
+            <button class="btn" onclick="appendDot()">.</button>
+            <button class="btn btn-gold" onclick="calculate()"><i class="fas fa-equals"></i></button>
 
-<div class="section">
+            <!-- Extra VIP functions -->
+            <button class="btn btn-wide btn-gold" onclick="sqrt()"><i class="fas fa-square-root-alt"></i> √</button>
+            <button class="btn btn-wide btn-gold" onclick="square()">x²</button>
+        </div>
 
-<h3>Age Difference</h3>
+        <div class="footer-note">
+            <i class="fas fa-bolt"></i> instant precision • golden ratio
+        </div>
+    </div>
 
-<input type="date" id="date1">
-<input type="date" id="date2">
+    <script>
+        const display = document.getElementById('calc-display');
+        let currentInput = '';
+        let lastResult = null;
 
-<button onclick="ageDifference()">Calculate Difference</button>
+        function updateDisplay(value) {
+            display.value = value || '0';
+        }
 
-<div class="result" id="diffResult"></div>
+        function appendNumber(num) {
+            if (currentInput === '0' && num !== '.') {
+                currentInput = num;
+            } else {
+                currentInput += num;
+            }
+            updateDisplay(currentInput);
+        }
 
-</div>
+        function appendOperator(op) {
+            if (currentInput === '' && lastResult !== null) {
+                // if no current input but we have a previous result, use it
+                currentInput = lastResult.toString() + op;
+            } else if (currentInput !== '' && !isLastCharOperator()) {
+                currentInput += op;
+            } else if (currentInput !== '' && isLastCharOperator()) {
+                // replace last operator
+                currentInput = currentInput.slice(0, -1) + op;
+            }
+            updateDisplay(currentInput);
+        }
 
-</div>
+        function appendDot() {
+            // split by operators to check if current number already has dot
+            let parts = currentInput.split(/[\+\-\*\/%]/);
+            let lastPart = parts[parts.length-1];
+            if (!lastPart.includes('.')) {
+                if (lastPart === '') {
+                    currentInput += '0.';
+                } else {
+                    currentInput += '.';
+                }
+            }
+            updateDisplay(currentInput);
+        }
 
-<script>
+        function clearDisplay() {
+            currentInput = '';
+            lastResult = null;
+            updateDisplay('0');
+        }
 
-function calculateAge(){
+        function deleteLast() {
+            currentInput = currentInput.slice(0, -1);
+            if (currentInput === '') {
+                updateDisplay('0');
+            } else {
+                updateDisplay(currentInput);
+            }
+        }
 
-let dob=document.getElementById("dob").value;
+        function isLastCharOperator() {
+            if (currentInput.length === 0) return false;
+            let last = currentInput[currentInput.length-1];
+            return ['+', '-', '*', '/', '%'].includes(last);
+        }
 
-if(!dob){
-alert("Select date of birth");
-return;
-}
+        function calculate() {
+            if (currentInput === '') return;
+            // replace × and ÷ with * and /
+            let expr = currentInput.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+            try {
+                // evaluate safely
+                let result = eval(expr);
+                if (result === Infinity || isNaN(result)) {
+                    throw new Error('Invalid');
+                }
+                // limit decimal places to avoid long numbers
+                result = Math.round(result * 1e10) / 1e10;
+                display.value = result;
+                currentInput = result.toString();
+                lastResult = result;
+            } catch (e) {
+                display.value = 'Error';
+                currentInput = '';
+            }
+        }
 
-let birth=new Date(dob);
-let today=new Date();
+        function sqrt() {
+            if (currentInput === '') return;
+            let val = parseFloat(currentInput);
+            if (val < 0) {
+                display.value = 'Error';
+                currentInput = '';
+                return;
+            }
+            let result = Math.sqrt(val);
+            result = Math.round(result * 1e10) / 1e10;
+            display.value = result;
+            currentInput = result.toString();
+            lastResult = result;
+        }
 
-let diff=today-birth;
+        function square() {
+            if (currentInput === '') return;
+            let val = parseFloat(currentInput);
+            let result = val * val;
+            result = Math.round(result * 1e10) / 1e10;
+            display.value = result;
+            currentInput = result.toString();
+            lastResult = result;
+        }
 
-let years=today.getFullYear()-birth.getFullYear();
-let months=today.getMonth()-birth.getMonth();
-let days=today.getDate()-birth.getDate();
-
-if(days<0){
-months--;
-days+=30;
-}
-
-if(months<0){
-years--;
-months+=12;
-}
-
-let totalDays=Math.floor(diff/(1000*60*60*24));
-let totalWeeks=Math.floor(totalDays/7);
-let totalMonths=Math.floor(totalDays/30);
-let totalHours=Math.floor(diff/(1000*60*60));
-let totalMinutes=Math.floor(diff/(1000*60));
-let totalSeconds=Math.floor(diff/1000);
-
-let nextBirthday=new Date(today.getFullYear(),birth.getMonth(),birth.getDate());
-
-if(today>nextBirthday){
-nextBirthday.setFullYear(today.getFullYear()+1);
-}
-
-let birthdayDays=Math.ceil((nextBirthday-today)/(1000*60*60*24));
-
-let dayName=birth.toLocaleDateString('en-US',{weekday:'long'});
-
-let lifeExpectancy=80*365;
-let lifePercent=(totalDays/lifeExpectancy)*100;
-
-document.getElementById("lifeBar").style.width=lifePercent+"%";
-
-document.getElementById("result").innerHTML=
-
-"<b>Exact Age:</b> "+years+" Years "+months+" Months "+days+" Days<br><br>"+
-
-"<b>Total Months:</b> "+totalMonths+"<br>"+
-"<b>Total Weeks:</b> "+totalWeeks+"<br>"+
-"<b>Total Days:</b> "+totalDays+"<br>"+
-"<b>Total Hours:</b> "+totalHours+"<br>"+
-"<b>Total Minutes:</b> "+totalMinutes+"<br>"+
-"<b>Total Seconds:</b> "+totalSeconds+"<br><br>"+
-
-"<b>Next Birthday In:</b> "+birthdayDays+" Days<br>"+
-"<b>Day of Birth:</b> "+dayName;
-
-}
-
-function ageDifference(){
-
-let d1=document.getElementById("date1").value;
-let d2=document.getElementById("date2").value;
-
-if(!d1 || !d2){
-alert("Select both dates");
-return;
-}
-
-let date1=new Date(d1);
-let date2=new Date(d2);
-
-let diff=Math.abs(date2-date1);
-
-let days=Math.floor(diff/(1000*60*60*24));
-let weeks=Math.floor(days/7);
-let months=Math.floor(days/30);
-
-document.getElementById("diffResult").innerHTML=
-
-"<b>Difference:</b><br><br>"+
-
-days+" Days<br>"+
-weeks+" Weeks<br>"+
-months+" Months";
-
-}
-
-</script>
-
+        // Allow keyboard input (optional, but nice)
+        document.addEventListener('keydown', (e) => {
+            const key = e.key;
+            if (key >= '0' && key <= '9') appendNumber(key);
+            else if (key === '.') appendDot();
+            else if (key === '+' || key === '-' || key === '*' || key === '/') {
+                if (key === '*') appendOperator('*');
+                else if (key === '/') appendOperator('/');
+                else appendOperator(key);
+            }
+            else if (key === '%') appendOperator('%');
+            else if (key === 'Enter' || key === '=') calculate();
+            else if (key === 'Backspace') deleteLast();
+            else if (key === 'Escape') clearDisplay();
+            else if (key === '√') sqrt(); // not typical keyboard key
+        });
+    </script>
 </body>
 </html>
